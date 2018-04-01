@@ -1,0 +1,8 @@
+{
+  "token": "your bot's token",
+  "last_checked_update_id": 0,
+  "delays": {
+    "bitcoin": 600,
+    "bot": 2
+  }
+}

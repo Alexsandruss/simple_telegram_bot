@@ -1,3 +1,8 @@
+"""
+this module simplifies work with .json files
+'load_db' returns dictionary after reading .json file
+'save_db' gets dictionary and writes it to .json file
+"""
 import json
 
 

@@ -5,9 +5,11 @@ from telegram_bot import Bot
 import parser
 import jsondb
 
+# delays determine how often processes run
 delays = jsondb.load_db("db.json")["delays"]
 
 
+# this function update parser's data
 def update_parser(shadow_db, lock, delay):
     while True:
         lock.acquire()
@@ -16,7 +18,9 @@ def update_parser(shadow_db, lock, delay):
         time.sleep(delay)
 
 
+# this function collects updates for bot from telegram and response on it
 def bot_processor(shadow_db, lock, delay):
+    # load dictionaries that stores token, last update's id, command, quotes etc.
     db = jsondb.load_db("db.json")
     commands = jsondb.load_db("commands.json")["commands"]
     quotes = jsondb.load_db("quotes.json")["quotes"]

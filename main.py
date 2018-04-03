@@ -46,6 +46,13 @@ def bot_processor(shadow_db, lock, delay):
                 # throwing dice feature
                 if text.startswith("/dice"):
                     bot.send_message(chat_id, throw_dice(text))
+                # random choice feature
+                if text.startswith("/random"):
+                    try:
+                        outgoing_message = random.choice(text.split(" ")[1:])
+                    except:
+                        outgoing_message = "Type command correctly"
+                    bot.send_message(chat_id, outgoing_message)
         finally:
             lock.release()
             db["last_checked_update_id"] = bot.last_checked_update_id

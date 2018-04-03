@@ -1,8 +1,4 @@
-dj-database-url==0.4.1
 Django==1.11
-gunicorn==19.6.0
-psycopg2==2.6.2
-whitenoise==2.0.6
 requests==2.7.0
 feedparser==5.2.1
 html5lib==0.999999999

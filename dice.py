@@ -28,7 +28,7 @@ def throw_dice(command):
     result = ""
     for i in range(m):
         result += str(random.randint(1, n))
-        if i == m-1:
+        if i == m - 1:
             continue
         result += ", "
     if incorrect_command:

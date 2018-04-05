@@ -3,9 +3,11 @@
     "/command_example": "response_to_command_example",
     "/start": "Hello, i'm bot",
     "?help_example": "response_to_help_example",
-    "?help": "Available help commands:\n?bitcoin\n?dice",
-    "/help": "Available help commands:\n?bitcoin\n?dice",
+    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice",
+    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice",
     "?bitcoin": "/bitcoin - Bitcoin rate",
+    "?ethereum": "/ethereum - Ethereum rate",
+    "?ripple": "/ripple - Ripple rate",
     "?dice": "/dice N-edged M times - bot throws N-edged dice M times"
   }
 }

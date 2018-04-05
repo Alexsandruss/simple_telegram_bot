@@ -15,7 +15,9 @@ delays = jsondb.load_db("db.json")["delays"]
 def update_parser(shadow_db, lock, delay):
     while True:
         lock.acquire()
-        shadow_db["bitcoin"] = parser.bitcoin()
+        shadow_db["bitcoin"] = parser.crypto_currencies_usd("bitcoin")
+        shadow_db["ethereum"] = parser.crypto_currencies_usd("ethereum")
+        shadow_db["ripple"] = parser.crypto_currencies_usd("ripple")
         lock.release()
         time.sleep(delay)
 
@@ -38,9 +40,13 @@ def bot_processor(shadow_db, lock, delay):
                 for command in commands.keys():
                     if text == command:
                         bot.send_message(chat_id, commands[command])
-                # bitcoin rate feature
+                # crypto currencies feature
                 if text == "/bitcoin":
                     bot.send_message(chat_id, shadow_db["bitcoin"])
+                if text == "/ethereum":
+                    bot.send_message(chat_id, shadow_db["ethereum"])
+                if text == "/ripple":
+                    bot.send_message(chat_id, shadow_db["ripple"])
                 # random quote feature
                 if text == "/quote":
                     bot.send_message(chat_id, random.choice(quotes))
@@ -71,8 +77,10 @@ if __name__ == '__main__':
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
     shadow_db["bitcoin"] = "unknown"
+    shadow_db["ethereum"] = "unknown"
+    shadow_db["ripple"] = "unknown"
 
-    parser_updater = multiprocessing.Process(target=update_parser, args=(shadow_db, lock, delays["bitcoin"]))
+    parser_updater = multiprocessing.Process(target=update_parser, args=(shadow_db, lock, delays["parser"]))
     bot_process = multiprocessing.Process(target=bot_processor, args=(shadow_db, lock, delays["bot"]))
 
     parser_updater.start()

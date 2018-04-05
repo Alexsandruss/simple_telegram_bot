@@ -26,7 +26,7 @@ class Bot:
         }
         updates = self.telegram_request("getupdates", params)
         if len(updates) != 0:
-            self.last_checked_update_id = updates[len(updates)-1]["update_id"]
+            self.last_checked_update_id = updates[len(updates) - 1]["update_id"]
         return updates
 
     def send_message(self, chat_id, text, disable_notification=False):

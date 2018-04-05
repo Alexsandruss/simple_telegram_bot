@@ -5,9 +5,11 @@ Features:
 2. shows random quote on "/quote" command (quotes are stored in "quotes.json");
 3. shows bitcoin rate (updates every 10 minutes) on "/bitcoin" command;
 4. throws N-edged dice M times on "/dice N-edged M times" command;
-5. randomly chooses variant on "/random 1st_variant 2nd_variant 3rd_variant etc".
+5. randomly chooses variant on "/random 1st_variant 2nd_variant 3rd_variant etc";
+6. shows days until New Year and summer on "/newyear" and "/summer" commands.
 
 Installation:
 1. copy repository;
 2. create bot and get token from BotFather(t.me/BotFather);
-3. insert token in db.json.
+3. insert token in db.json;
+4. run main.py.

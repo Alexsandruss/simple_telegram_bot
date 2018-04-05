@@ -12,7 +12,7 @@ class Bot:
         if response["ok"]:
             return response["result"]
         else:
-            return "Error " + str(response["error_code"]) + ", " + response["description"]
+            return {}
 
     def get_me(self):
         return self.telegram_request("getme")

@@ -4,6 +4,7 @@ import random
 from telegram_bot import Bot
 from dice import throw_dice
 import parser
+import digest
 import jsondb
 
 # delays determine how often processes run
@@ -53,6 +54,11 @@ def bot_processor(shadow_db, lock, delay):
                     except:
                         outgoing_message = "Type command correctly"
                     bot.send_message(chat_id, outgoing_message)
+                # days until newyear or summer feature
+                if text == "/newyear":
+                    bot.send_message(chat_id, digest.days_until_newyear())
+                if text == "/summer":
+                    bot.send_message(chat_id, digest.days_until_summer())
         finally:
             lock.release()
             db["last_checked_update_id"] = bot.last_checked_update_id

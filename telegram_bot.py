@@ -37,6 +37,15 @@ class Bot:
         }
         return self.telegram_request("sendmessage", params)
 
+    def send_location(self, chat_id, coordinates: dict, disable_notification=False):
+        params = {
+            'chat_id': chat_id,
+            'latitude': coordinates["latitude"],
+            'longitude': coordinates["longitude"],
+            "disable_notification": disable_notification
+        }
+        return self.telegram_request("sendlocation", params)
+
     def get_last_messages(self):
         updates = self.get_updates(self.last_checked_update_id + 1, allowed_updates=["message"])
         return [update["message"] for update in updates]

@@ -5,6 +5,7 @@ from telegram_bot import Bot
 from dice import throw_dice
 import parser
 import digest
+import locations
 import jsondb
 
 # delays determine how often processes run
@@ -65,6 +66,9 @@ def bot_processor(shadow_db, lock, delay):
                     bot.send_message(chat_id, digest.days_until_newyear())
                 if text == "/summer":
                     bot.send_message(chat_id, digest.days_until_summer())
+                # locations feature
+                if text.startswith("/where"):
+                    bot.send_location(chat_id, locations.get_coordinates(text.split(" ")[1]))
         finally:
             lock.release()
             db["last_checked_update_id"] = bot.last_checked_update_id

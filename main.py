@@ -33,50 +33,49 @@ def bot_processor(shadow_db, lock, delay):
     bot.last_checked_update_id = db["last_checked_update_id"]
     while True:
         lock.acquire()
-        try:
-            messages = bot.get_last_messages()
-            for message in messages:
+        messages = bot.get_last_messages()
+        for message in messages:
+            try:
                 text = message["text"]
                 chat_id = message["chat"]["id"]
-                for command in commands.keys():
-                    if text == command:
-                        bot.send_message(chat_id, commands[command])
-                # crypto currencies feature
-                if text == "/bitcoin":
-                    bot.send_message(chat_id, shadow_db["bitcoin"])
-                if text == "/ethereum":
-                    bot.send_message(chat_id, shadow_db["ethereum"])
-                if text == "/ripple":
-                    bot.send_message(chat_id, shadow_db["ripple"])
-                # random quote feature
-                if text == "/quote":
-                    bot.send_message(chat_id, random.choice(quotes))
-                # throwing dice feature
-                if text.startswith("/dice"):
-                    bot.send_message(chat_id, throw_dice(text))
-                # random choice feature
-                if text.startswith("/random"):
-                    try:
-                        outgoing_message = random.choice(text.split(" ")[1:])
-                    except:
-                        outgoing_message = "Type command correctly"
-                    bot.send_message(chat_id, outgoing_message)
-                # days until newyear or summer feature
-                if text == "/newyear":
-                    bot.send_message(chat_id, digest.days_until_newyear())
-                if text == "/summer":
-                    bot.send_message(chat_id, digest.days_until_summer())
-                # locations feature
-                if text.startswith("/where"):
-                    try:
-                        location = text.split(" ")[1]
-                        bot.send_location(chat_id, locations.get_coordinates(location))
-                    except:
-                        bot.send_message(chat_id, "Type command correctly")
-        finally:
-            lock.release()
-            db["last_checked_update_id"] = bot.last_checked_update_id
-            jsondb.save_db("db.json", db)
+            # some messages have not text (stickers, files etc)
+            except:
+                text = ""
+                chat_id = -1
+            for command in commands.keys():
+                if text == command:
+                    bot.send_message(chat_id, commands[command])
+            # crypto currencies feature
+            if text == "/bitcoin" or text == "/ethereum" or text == "/ripple":
+                bot.send_message(chat_id, shadow_db[text[1:]])
+            # random quote feature
+            if text == "/quote":
+                bot.send_message(chat_id, random.choice(quotes))
+            # throwing dice feature
+            if text.startswith("/dice"):
+                bot.send_message(chat_id, throw_dice(text))
+            # random choice feature
+            if text.startswith("/random"):
+                try:
+                    outgoing_message = random.choice(text.split(" ")[1:])
+                except:
+                    outgoing_message = "Type command correctly"
+                bot.send_message(chat_id, outgoing_message)
+            # days until newyear or summer feature
+            if text == "/newyear":
+                bot.send_message(chat_id, digest.days_until_newyear())
+            if text == "/summer":
+                bot.send_message(chat_id, digest.days_until_summer())
+            # locations feature
+            if text.startswith("/where"):
+                try:
+                    location = text.split(" ")[1]
+                    bot.send_location(chat_id, locations.get_coordinates(location))
+                except:
+                    bot.send_message(chat_id, "Type command correctly")
+        lock.release()
+        db["last_checked_update_id"] = bot.last_checked_update_id
+        jsondb.save_db("db.json", db)
         time.sleep(delay)
 
 
@@ -84,9 +83,7 @@ if __name__ == '__main__':
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
-    shadow_db["bitcoin"] = "unknown"
-    shadow_db["ethereum"] = "unknown"
-    shadow_db["ripple"] = "unknown"
+    shadow_db["bitcoin"], shadow_db["ethereum"], shadow_db["ripple"] = "unknown", "unknown", "unknown"
 
     parser_updater = multiprocessing.Process(target=update_parser, args=(shadow_db, lock, delays["parser"]))
     bot_process = multiprocessing.Process(target=bot_processor, args=(shadow_db, lock, delays["bot"]))

@@ -7,7 +7,7 @@ Features:
 4. throws N-edged dice M times on "/dice N-edged M times" command;
 5. randomly chooses variant on "/random 1st_variant 2nd_variant 3rd_variant etc";
 6. shows days until New Year and summer on "/newyear" and "/summer" commands;
-7. gives location with coordinates on "/where" command.
+7. gives location with coordinates on "/where <location>" command.
 
 Installation:
 1. copy repository;

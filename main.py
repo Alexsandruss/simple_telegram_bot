@@ -68,7 +68,11 @@ def bot_processor(shadow_db, lock, delay):
                     bot.send_message(chat_id, digest.days_until_summer())
                 # locations feature
                 if text.startswith("/where"):
-                    bot.send_location(chat_id, locations.get_coordinates(text.split(" ")[1]))
+                    try:
+                        location = text.split(" ")[1]
+                        bot.send_location(chat_id, locations.get_coordinates(location))
+                    except:
+                        bot.send_message(chat_id, "Type command correctly")
         finally:
             lock.release()
             db["last_checked_update_id"] = bot.last_checked_update_id

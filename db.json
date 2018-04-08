@@ -2,7 +2,7 @@
   "token": "your bot's token",
   "last_checked_update_id": 0,
   "delays": {
-    "parser": 600,
+    "parser": 300,
     "bot": 2
   }
 }

@@ -19,6 +19,13 @@ locations_list = [
             "latitude": 52.518242,
             "longitude": 13.400813
         }
+    },
+    {
+        "name": "Washington",
+        "coordinates": {
+            "latitude": 38.897320,
+            "longitude": -77.036441
+        }
     }
 ]
 

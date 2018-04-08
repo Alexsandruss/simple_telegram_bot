@@ -56,11 +56,13 @@ def bot_processor(shadow_db, lock, delay):
                 bot.send_message(chat_id, throw_dice(text))
             # random choice feature
             if text.startswith("/random"):
+                outgoing_message = ""
                 try:
                     outgoing_message = random.choice(text.split(" ")[1:])
                 except:
                     outgoing_message = "Type command correctly"
-                bot.send_message(chat_id, outgoing_message)
+                finally:
+                    bot.send_message(chat_id, outgoing_message)
             # days until newyear or summer feature
             if text == "/newyear":
                 bot.send_message(chat_id, digest.days_until_newyear())
@@ -73,9 +75,9 @@ def bot_processor(shadow_db, lock, delay):
                     bot.send_location(chat_id, locations.get_coordinates(location))
                 except:
                     bot.send_message(chat_id, "Type command correctly")
-        lock.release()
         db["last_checked_update_id"] = bot.last_checked_update_id
         jsondb.save_db("db.json", db)
+        lock.release()
         time.sleep(delay)
 
 

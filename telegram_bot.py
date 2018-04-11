@@ -1,18 +1,31 @@
 import requests
+import time
 
 
 class Bot:
-    def __init__(self, token):
+    def __init__(self, token, keep_log: bool = False, log_file: str = "log.txt"):
         self.token = token
+        self.keep_log = keep_log
+        self.log_file = log_file
         self.name = self.get_me()["first_name"]
         self.last_checked_update_id = 0
+        if self.keep_log:
+            log = open(self.log_file, "w")
+            log.write("BOT LOG")
 
     def telegram_request(self, method, parameters=None):
         response = requests.post("https://api.telegram.org/bot" + self.token + "/" + method, params=parameters).json()
+        self.log_update(str(response))
         if response["ok"]:
             return response["result"]
         else:
             return {}
+
+    def log_update(self, note):
+        if self.keep_log:
+            log = open(self.log_file, "a")
+            log.write("\n"+str(time.time())+":"+note)
+            log.close()
 
     def get_me(self):
         return self.telegram_request("getme")

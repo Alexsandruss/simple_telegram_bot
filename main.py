@@ -29,7 +29,7 @@ def bot_processor(shadow_db, lock, delay):
     db = jsondb.load_db("db.json")
     commands = jsondb.load_db("commands.json")["commands"]
     quotes = jsondb.load_db("quotes.json")["quotes"]
-    bot = Bot(db["token"])
+    bot = Bot(db["token"], True)
     bot.last_checked_update_id = db["last_checked_update_id"]
     while True:
         lock.acquire()
@@ -75,6 +75,9 @@ def bot_processor(shadow_db, lock, delay):
                     bot.send_location(chat_id, locations.get_coordinates(location))
                 except:
                     bot.send_message(chat_id, "Type command correctly")
+            # chat id getter
+            if text == "/chat_id":
+                bot.send_message(chat_id, chat_id)
         db["last_checked_update_id"] = bot.last_checked_update_id
         jsondb.save_db("db.json", db)
         lock.release()

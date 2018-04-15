@@ -3,8 +3,8 @@
     "/command_example": "response_to_command_example",
     "/start": "Hello, i'm bot",
     "?help_example": "response_to_help_example",
-    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where",
-    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where",
+    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where\n?chat_id",
+    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where\n?chat_id",
     "?bitcoin": "/bitcoin - Bitcoin rate",
     "?ethereum": "/ethereum - Ethereum rate",
     "?ripple": "/ripple - Ripple rate",
@@ -13,6 +13,7 @@
     "?where": "/where - bot gives location with coordinates (?locations - shows locations list)",
     "?locations": "Paris, Berlin, London, Washington",
     "?newyear": "/newyear - shows days until New Year",
-    "?summer": "/summer - shows days until summer"
+    "?summer": "/summer - shows days until summer",
+    "?chat_id": "/chat_id - shows telegram chat id"
   }
 }

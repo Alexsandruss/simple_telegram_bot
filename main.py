@@ -29,55 +29,55 @@ def bot_processor(shadow_db, lock, delay):
     db = jsondb.load_db("db.json")
     commands = jsondb.load_db("commands.json")["commands"]
     quotes = jsondb.load_db("quotes.json")["quotes"]
-    bot = Bot(db["token"], True)
+    bot = Bot(token=db["token"], keep_log=True)
     bot.last_checked_update_id = db["last_checked_update_id"]
     while True:
         lock.acquire()
         messages = bot.get_last_messages()
         for message in messages:
-            try:
-                text = message["text"]
-                chat_id = message["chat"]["id"]
-            # some messages have not text (stickers, files etc)
-            except:
-                text = ""
-                chat_id = -1
-            for command in commands.keys():
-                if text == command:
-                    bot.send_message(chat_id, commands[command])
-            # crypto currencies feature
-            if text == "/bitcoin" or text == "/ethereum" or text == "/ripple":
-                bot.send_message(chat_id, shadow_db[text[1:]])
-            # random quote feature
-            if text == "/quote":
-                bot.send_message(chat_id, random.choice(quotes))
-            # throwing dice feature
-            if text.startswith("/dice"):
-                bot.send_message(chat_id, throw_dice(text))
-            # random choice feature
-            if text.startswith("/random"):
-                outgoing_message = ""
+            if round(time.time()) - message["date"] <= db["max_time_diff"]:
                 try:
-                    outgoing_message = random.choice(text.split(" ")[1:])
+                    text = message["text"]
+                    chat_id = message["chat"]["id"]
+                # some messages have not text (stickers, files etc)
                 except:
-                    outgoing_message = "Type command correctly"
-                finally:
-                    bot.send_message(chat_id, outgoing_message)
-            # days until newyear or summer feature
-            if text == "/newyear":
-                bot.send_message(chat_id, digest.days_until_newyear())
-            if text == "/summer":
-                bot.send_message(chat_id, digest.days_until_summer())
-            # locations feature
-            if text.startswith("/where"):
-                try:
-                    location = text.split(" ")[1]
-                    bot.send_location(chat_id, locations.get_coordinates(location))
-                except:
-                    bot.send_message(chat_id, "Type command correctly")
-            # chat id getter
-            if text == "/chat_id":
-                bot.send_message(chat_id, chat_id)
+                    continue
+                for command in commands.keys():
+                    if text == command:
+                        bot.send_message(chat_id, commands[command])
+                # crypto currencies feature
+                if text == "/bitcoin" or text == "/ethereum" or text == "/ripple":
+                    bot.send_message(chat_id, shadow_db[text[1:]])
+                # random quote feature
+                if text == "/quote":
+                    bot.send_message(chat_id, random.choice(quotes))
+                # throwing dice feature
+                if text.startswith("/dice"):
+                    bot.send_message(chat_id, throw_dice(text))
+                # random choice feature
+                if text.startswith("/random"):
+                    outgoing_message = ""
+                    try:
+                        outgoing_message = random.choice(text.split(" ")[1:])
+                    except:
+                        outgoing_message = "Type command correctly"
+                    finally:
+                        bot.send_message(chat_id, outgoing_message)
+                # days until newyear or summer feature
+                if text == "/newyear":
+                    bot.send_message(chat_id, digest.days_until_newyear())
+                if text == "/summer":
+                    bot.send_message(chat_id, digest.days_until_summer())
+                # locations feature
+                if text.startswith("/where"):
+                    try:
+                        location = text.split(" ")[1]
+                        bot.send_location(chat_id, locations.get_coordinates(location))
+                    except:
+                        bot.send_message(chat_id, "Type command correctly")
+                # chat id getter
+                if text == "/chat_id":
+                    bot.send_message(chat_id, chat_id)
         db["last_checked_update_id"] = bot.last_checked_update_id
         jsondb.save_db("db.json", db)
         lock.release()

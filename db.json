@@ -4,5 +4,6 @@
   "delays": {
     "parser": 300,
     "bot": 2
-  }
+  },
+  "max_time_diff": 60
 }

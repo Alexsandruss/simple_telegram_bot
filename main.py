@@ -15,7 +15,8 @@ quotes = jsondb.load_db("quotes.json")["quotes"]
 
 
 # this function update parser's data
-def update_parser(shadow_db, lock, delay):
+def update_parser(lock, delay):
+    global shadow_db
     while True:
         lock.acquire()
         shadow_db["bitcoin"] = parser.crypto_currencies_usd("bitcoin")
@@ -106,11 +107,18 @@ def message_handler(incoming_message):
             "text": incoming_message["chat_id"],
             "chat_id": incoming_message["chat_id"]
         }
+    # unix time feature
+    if incoming_message["text"] == "/unix_time":
+        result = {
+            "method": "send_message",
+            "text": "{} seconds since 00:00:00 1 January 1970".format(str(round(time.time()))),
+            "chat_id": incoming_message["chat_id"]
+        }
     return result
 
 
 # this function collects updates for bot from telegram and response on it
-def bot_processor(shadow_db, lock, delay):
+def bot_processor(lock, delay):
     # load dictionaries that stores token, last update's id, command, quotes etc.
     db = jsondb.load_db("db.json")
     bot = Bot(token=db["token"], keep_log=True)
@@ -144,8 +152,8 @@ if __name__ == '__main__':
     shadow_db = manager.dict()
     shadow_db["bitcoin"], shadow_db["ethereum"], shadow_db["ripple"] = "unknown", "unknown", "unknown"
 
-    parser_updater = multiprocessing.Process(target=update_parser, args=(shadow_db, lock, delays["parser"]))
-    bot_process = multiprocessing.Process(target=bot_processor, args=(shadow_db, lock, delays["bot"]))
+    parser_updater = multiprocessing.Process(target=update_parser, args=(lock, delays["parser"]))
+    bot_process = multiprocessing.Process(target=bot_processor, args=(lock, delays["bot"]))
 
     parser_updater.start()
     bot_process.start()

@@ -101,7 +101,7 @@ def message_handler(incoming_message):
                 "method": "send_message",
                 "text": "Type command correctly",
                 "chat_id": incoming_message["chat_id"]
-            },
+            }
     if incoming_message["text"].startswith("/location"):
         try:
             location = incoming_message["text"].split(" ")[1:]
@@ -112,10 +112,10 @@ def message_handler(incoming_message):
             }
         except:
             result = {
-                         "method": "send_message",
-                         "text": "Type command correctly",
-                         "chat_id": incoming_message["chat_id"]
-            },
+                "method": "send_message",
+                "text": "Type command correctly",
+                "chat_id": incoming_message["chat_id"]
+            }
     # chat id getter
     if incoming_message["text"] == "/chat_id":
         result = {

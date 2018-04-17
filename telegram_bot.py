@@ -12,6 +12,7 @@ class Bot:
         if self.keep_log:
             log = open(self.log_file, "w")
             log.write("BOT LOG")
+            log.close()
 
     def telegram_request(self, method, parameters=None):
         response = requests.post("https://api.telegram.org/bot" + self.token + "/" + method, params=parameters).json()
@@ -24,7 +25,7 @@ class Bot:
     def log_update(self, note):
         if self.keep_log:
             log = open(self.log_file, "a")
-            log.write("\n"+str(time.time())+":"+note)
+            log.write("\n" + str(time.time()) + ":" + note)
             log.close()
 
     def get_me(self):

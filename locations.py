@@ -26,6 +26,13 @@ locations_list = [
             "latitude": 38.897320,
             "longitude": -77.036441
         }
+    },
+    {
+        "name": "Tokyo",
+        "coordinates": {
+            "latitude": 35.684845,
+            "longitude": 139.752754
+        }
     }
 ]
 

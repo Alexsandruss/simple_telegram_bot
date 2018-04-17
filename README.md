@@ -8,7 +8,9 @@ Features:
 5. randomly chooses variant on "/random 1st_variant 2nd_variant 3rd_variant etc";
 6. shows days until New Year and summer on "/newyear" and "/summer" commands;
 7. gives location with coordinates on "/where <location>" command;
-8. shows shows telegram chat id on "/chat_id" command.
+8. shows the location on map by coordinates on "/location <latitude> <longitude>" command;
+9. shows telegram chat id on "/chat_id" command;
+10. shows seconds since 00:00:00 1 January 1970.
 
 Installation:
 1. copy repository;

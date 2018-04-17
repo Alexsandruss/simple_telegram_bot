@@ -8,9 +8,11 @@ import digest
 import locations
 import jsondb
 
-
+# delays determine how often processes run
 delays = jsondb.load_db("db.json")["delays"]
+# default / and ? commands from commands.json
 commands = jsondb.load_db("commands.json")["commands"]
+# quotes for bot's random quote feature
 quotes = jsondb.load_db("quotes.json")["quotes"]
 
 
@@ -99,7 +101,21 @@ def message_handler(incoming_message):
                 "method": "send_message",
                 "text": "Type command correctly",
                 "chat_id": incoming_message["chat_id"]
+            },
+    if incoming_message["text"].startswith("/location"):
+        try:
+            location = incoming_message["text"].split(" ")[1:]
+            result = {
+                "method": "send_location",
+                "coordinates": {"latitude": float(location[0]), "longitude": float(location[1])},
+                "chat_id": incoming_message["chat_id"]
             }
+        except:
+            result = {
+                         "method": "send_message",
+                         "text": "Type command correctly",
+                         "chat_id": incoming_message["chat_id"]
+            },
     # chat id getter
     if incoming_message["text"] == "/chat_id":
         result = {
@@ -117,11 +133,9 @@ def message_handler(incoming_message):
     return result
 
 
-# this function collects updates for bot from telegram and response on it
 def bot_processor(lock, delay):
-    # load dictionaries that stores token, last update's id, command, quotes etc.
     db = jsondb.load_db("db.json")
-    bot = Bot(token=db["token"], keep_log=True)
+    bot = Bot(token=db["token"])
     bot.last_checked_update_id = db["last_checked_update_id"]
     while True:
         lock.acquire()

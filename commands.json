@@ -1,19 +1,21 @@
 {
   "commands": {
     "/command_example": "response_to_command_example",
-    "/start": "Hello, i'm bot",
+    "/start": "Hello, i'm bot\nAvailable help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
     "?help_example": "response_to_help_example",
-    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where\n?chat_id",
-    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where\n?chat_id",
+    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
+    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
     "?bitcoin": "/bitcoin - Bitcoin rate",
     "?ethereum": "/ethereum - Ethereum rate",
     "?ripple": "/ripple - Ripple rate",
     "?dice": "/dice N-edged M times - bot throws N-edged dice M times",
     "?random": "'random 1st_variant 2nd_variant etc' - bot randomly chooses variant",
     "?where": "/where - bot gives location with coordinates (?locations - shows locations list)",
-    "?locations": "Paris, Berlin, London, Washington",
+    "?locations": "Paris, Berlin, London, Washington, Tokyo",
+    "?location": "/location <latitude> <longitude> - shows place with these coordinates on map",
     "?newyear": "/newyear - shows days until New Year",
     "?summer": "/summer - shows days until summer",
-    "?chat_id": "/chat_id - shows telegram chat id"
+    "?chat_id": "/chat_id - shows telegram chat id",
+    "?unix_time": "/unix_time - shows seconds since 00:00:00 1 January 1970"
   }
 }

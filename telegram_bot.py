@@ -15,7 +15,10 @@ class Bot:
             log.close()
 
     def telegram_request(self, method, parameters=None):
-        response = requests.post("https://api.telegram.org/bot" + self.token + "/" + method, params=parameters).json()
+        try:
+            response = requests.post("https://api.telegram.org/bot" + self.token + "/" + method, params=parameters).json()
+        except:
+            response = {"ok": False}
         self.log_update(str(response))
         if response["ok"]:
             return response["result"]

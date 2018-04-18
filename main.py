@@ -24,6 +24,7 @@ def update_parser(lock, delay):
         shadow_db["bitcoin"] = parser.crypto_currencies_usd("bitcoin")
         shadow_db["ethereum"] = parser.crypto_currencies_usd("ethereum")
         shadow_db["ripple"] = parser.crypto_currencies_usd("ripple")
+        shadow_db["litecoin"] = parser.crypto_currencies_usd("litecoin")
         lock.release()
         time.sleep(delay)
 
@@ -41,7 +42,7 @@ def message_handler(incoming_message):
                 "chat_id": incoming_message["chat_id"]
             }
     # crypto currencies feature
-    if incoming_message["text"] in ["/bitcoin", "/ethereum", "/ripple"]:
+    if incoming_message["text"] in ["/bitcoin", "/ethereum", "/ripple", "/litecoin"]:
         result = {
             "method": "send_message",
             "text": shadow_db[incoming_message["text"][1:]],
@@ -164,7 +165,7 @@ if __name__ == '__main__':
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
-    shadow_db["bitcoin"], shadow_db["ethereum"], shadow_db["ripple"] = "unknown", "unknown", "unknown"
+    shadow_db["bitcoin"], shadow_db["ethereum"], shadow_db["ripple"], shadow_db["litecoin"] = "", "", "", ""
 
     parser_updater = multiprocessing.Process(target=update_parser, args=(lock, delays["parser"]))
     bot_process = multiprocessing.Process(target=bot_processor, args=(lock, delays["bot"]))

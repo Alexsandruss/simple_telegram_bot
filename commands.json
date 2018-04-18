@@ -1,13 +1,14 @@
 {
   "commands": {
     "/command_example": "response_to_command_example",
-    "/start": "Hello, i'm bot\nAvailable help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
+    "/start": "Hello, i'm bot\nAvailable help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
     "?help_example": "response_to_help_example",
-    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
-    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
+    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
+    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
     "?bitcoin": "/bitcoin - Bitcoin rate",
     "?ethereum": "/ethereum - Ethereum rate",
     "?ripple": "/ripple - Ripple rate",
+    "?litecoin": "/litecoin - Litecoin rate",
     "?dice": "/dice N-edged M times - bot throws N-edged dice M times",
     "?random": "'random 1st_variant 2nd_variant etc' - bot randomly chooses variant",
     "?where": "/where - bot gives location with coordinates (?locations - shows locations list)",

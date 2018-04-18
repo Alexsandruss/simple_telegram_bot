@@ -13,7 +13,8 @@ def crypto_currencies_usd(name):
     currency_links = {
         "bitcoin": "https://ru.investing.com/currencies/btc-usd",
         "ethereum": "https://ru.investing.com/crypto/ethereum",
-        "ripple": "https://ru.investing.com/crypto/ripple"
+        "ripple": "https://ru.investing.com/crypto/ripple",
+        "litecoin": "https://ru.investing.com/crypto/litecoin"
     }
     try:
         r = requests.get(currency_links[name], headers=headers)

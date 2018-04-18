@@ -1,4 +1,5 @@
 import time
+import jsondb
 
 
 def days_until_summer():
@@ -25,3 +26,14 @@ def days_until_newyear():
     else:
         days_in_year = 365
     return str(days_in_year - current_time[7] + 1) + " days until New Year"
+
+
+def check_holiday():
+    holidays = jsondb.load_db("holidays.json")
+    current_local_time = time.localtime()
+    result = "Today there is no holiday("
+    for date in holidays.keys():
+        if date.split(".") == [str(current_local_time[1]), str(current_local_time[2])]:
+            result = holidays[date]
+            break
+    return result

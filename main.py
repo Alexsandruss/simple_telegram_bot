@@ -131,6 +131,13 @@ def message_handler(incoming_message):
             "text": "{} seconds since 00:00:00 1 January 1970".format(str(round(time.time()))),
             "chat_id": incoming_message["chat_id"]
         }
+    # holiday feature
+    if incoming_message["text"] == "/holiday":
+        result = {
+            "method": "send_message",
+            "text": digest.check_holiday(),
+            "chat_id": incoming_message["chat_id"]
+        }
     return result
 
 

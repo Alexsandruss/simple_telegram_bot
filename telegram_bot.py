@@ -3,8 +3,9 @@ import time
 
 
 class Bot:
-    def __init__(self, token, keep_log: bool = False, log_file: str = "log.txt"):
+    def __init__(self, token, keep_log: bool=False, log_file: str="log.txt", admin_id=None):
         self.token = token
+        self.admin_id = admin_id
         self.keep_log = keep_log
         self.log_file = log_file
         self.name = self.get_me()["first_name"]
@@ -16,7 +17,8 @@ class Bot:
 
     def telegram_request(self, method, parameters=None):
         try:
-            response = requests.post("https://api.telegram.org/bot" + self.token + "/" + method, params=parameters).json()
+            response = requests.post("https://api.telegram.org/bot" + self.token + "/" + method,
+                                     params=parameters).json()
         except:
             response = {"ok": False}
         self.log_update(str(response))
@@ -26,7 +28,7 @@ class Bot:
             return {}
 
     def log_update(self, note):
-        if self.keep_log:
+        if self.keep_log and note not in ["{}", "[]", ""]:
             log = open(self.log_file, "a")
             log.write("\n" + str(time.time()) + ":" + note)
             log.close()
@@ -65,4 +67,8 @@ class Bot:
 
     def get_last_messages(self):
         updates = self.get_updates(self.last_checked_update_id + 1, allowed_updates=["message"])
-        return [update["message"] for update in updates]
+        messages = []
+        for update in updates:
+            if "message" in update.keys():
+                messages.append(update["message"])
+        return messages

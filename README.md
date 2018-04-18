@@ -10,7 +10,7 @@ Features:
 7. gives location with coordinates on "/where <location>" command;
 8. shows the location on map by coordinates on "/location <latitude> <longitude>" command;
 9. shows telegram chat id on "/chat_id" command;
-10. shows seconds since 00:00:00 1 January 1970.
+10. shows seconds since 00:00:00 1 January 1970 on "/unix_time" command.
 
 Installation:
 1. copy repository;

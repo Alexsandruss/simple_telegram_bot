@@ -1,10 +1,10 @@
 {
   "commands": {
     "/command_example": "response_to_command_example",
-    "/start": "Hello, i'm bot\nAvailable help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
+    "/start": "Hello, i'm bot\nAvailable help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time\n?holiday",
     "?help_example": "response_to_help_example",
-    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
-    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time",
+    "?help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time\n?holiday",
+    "/help": "Available help commands:\n?bitcoin, ?ethereum, ?ripple, ?litecoin\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time\n?holiday",
     "?bitcoin": "/bitcoin - Bitcoin rate",
     "?ethereum": "/ethereum - Ethereum rate",
     "?ripple": "/ripple - Ripple rate",
@@ -17,6 +17,7 @@
     "?newyear": "/newyear - shows days until New Year",
     "?summer": "/summer - shows days until summer",
     "?chat_id": "/chat_id - shows telegram chat id",
-    "?unix_time": "/unix_time - shows seconds since 00:00:00 1 January 1970"
+    "?unix_time": "/unix_time - shows seconds since 00:00:00 1 January 1970",
+    "?holiday": "/holiday - shows what holiday is today"
   }
 }

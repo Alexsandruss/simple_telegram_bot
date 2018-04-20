@@ -7,15 +7,17 @@ def days_until_summer():
     if current_time[0] % 4 == 0:
         days_in_year = 366
         first_summer_day = 153
+        last_summer_day = 244
     else:
         days_in_year = 365
         first_summer_day = 152
+        last_summer_day = 243
     if current_time[1] > 8:
-        result = str(first_summer_day + (days_in_year - current_time[7]) - 1) + " days until summer"
+        result = "{} days until summer".format(first_summer_day + (days_in_year - current_time[7]) - 1)
     elif current_time[1] < 6:
-        result = str(first_summer_day - current_time[7]) + " days until summer"
+        result = "{} days until summer".format(first_summer_day - current_time[7])
     else:
-        result = "Summer is here!"
+        result = "{} days until the end of summer".format(last_summer_day-current_time[7])
     return result
 
 
@@ -25,7 +27,7 @@ def days_until_newyear():
         days_in_year = 366
     else:
         days_in_year = 365
-    return str(days_in_year - current_time[7] + 1) + " days until New Year"
+    return "{} days until New Year".format(days_in_year - current_time[7] + 1)
 
 
 def check_holiday():

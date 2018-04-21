@@ -1,40 +1,7 @@
-locations_list = [
-    {
-        "name": "Paris",
-        "coordinates": {
-            "latitude": 48.854596,
-            "longitude": 2.347727
-        }
-    },
-    {
-        "name": "London",
-        "coordinates": {
-            "latitude": 51.500932,
-            "longitude": -0.123857
-        }
-    },
-    {
-        "name": "Berlin",
-        "coordinates": {
-            "latitude": 52.518242,
-            "longitude": 13.400813
-        }
-    },
-    {
-        "name": "Washington",
-        "coordinates": {
-            "latitude": 38.897320,
-            "longitude": -77.036441
-        }
-    },
-    {
-        "name": "Tokyo",
-        "coordinates": {
-            "latitude": 35.684845,
-            "longitude": 139.752754
-        }
-    }
-]
+import jsondb
+
+
+locations_list = jsondb.load_db("locations.json")["locations"]
 
 
 def get_coordinates(location_name):

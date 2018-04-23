@@ -3,11 +3,13 @@ import time
 
 
 class Bot:
-    def __init__(self, token, keep_log: bool=False, log_file: str="log.txt", admin_id=None):
+    def __init__(self, token, keep_log: bool=False, log_file: str="log.txt", admin_id=None,
+                 disable_notification: bool = False):
         self.token = token
         self.admin_id = admin_id
         self.keep_log = keep_log
         self.log_file = log_file
+        self.disable_notification = disable_notification
         self.name = self.get_me()["first_name"]
         self.last_checked_update_id = 0
         if self.keep_log:
@@ -48,22 +50,40 @@ class Bot:
             self.last_checked_update_id = updates[len(updates) - 1]["update_id"]
         return updates
 
-    def send_message(self, chat_id, text, disable_notification=False):
+    def send_message(self, chat_id, text):
         params = {
             'chat_id': chat_id,
             'text': text,
-            "disable_notification": disable_notification
+            "disable_notification": self.disable_notification
         }
         return self.telegram_request("sendmessage", params)
 
-    def send_location(self, chat_id, coordinates: dict, disable_notification=False):
+    def send_location(self, chat_id, coordinates: dict):
         params = {
             'chat_id': chat_id,
             'latitude': coordinates["latitude"],
             'longitude': coordinates["longitude"],
-            "disable_notification": disable_notification
+            "disable_notification": self.disable_notification
         }
         return self.telegram_request("sendlocation", params)
+
+    def send_photo(self, chat_id, photo, caption=None):
+        params = {
+            'chat_id': chat_id,
+            'photo': photo,
+            'caption': caption,
+            "disable_notification": self.disable_notification
+        }
+        return self.telegram_request("sendphoto", params)
+
+    def send_audio(self, chat_id, audio, caption=None):
+        params = {
+            'chat_id': chat_id,
+            'audio': audio,
+            'caption': caption,
+            "disable_notification": self.disable_notification
+        }
+        return self.telegram_request("sendphoto", params)
 
     def get_last_messages(self):
         updates = self.get_updates(self.last_checked_update_id + 1, allowed_updates=["message"])

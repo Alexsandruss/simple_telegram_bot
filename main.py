@@ -21,10 +21,13 @@ def update_parser(lock, delay):
     global shadow_db
     while True:
         lock.acquire()
-        shadow_db["bitcoin"] = parser.crypto_currencies_usd("bitcoin")
-        shadow_db["ethereum"] = parser.crypto_currencies_usd("ethereum")
-        shadow_db["ripple"] = parser.crypto_currencies_usd("ripple")
-        shadow_db["litecoin"] = parser.crypto_currencies_usd("litecoin")
+        shadow_db["bitcoin"] = parser.rate_usd("bitcoin")
+        shadow_db["ethereum"] = parser.rate_usd("ethereum")
+        shadow_db["ripple"] = parser.rate_usd("ripple")
+        shadow_db["litecoin"] = parser.rate_usd("litecoin")
+        shadow_db["monero"] = parser.rate_usd("monero")
+        shadow_db["gold"] = parser.rate_usd("gold")
+        shadow_db["brent_oil"] = parser.rate_usd("brent_oil")
         lock.release()
         time.sleep(delay)
 
@@ -42,7 +45,7 @@ def message_handler(incoming_message):
                 "chat_id": incoming_message["chat_id"]
             }
     # crypto currencies feature
-    if incoming_message["text"] in ["/bitcoin", "/ethereum", "/ripple", "/litecoin"]:
+    if incoming_message["text"] in ["/bitcoin", "/ethereum", "/ripple", "/litecoin", "/monero", "/gold", "/brent_oil"]:
         result = {
             "method": "send_message",
             "text": shadow_db[incoming_message["text"][1:]],
@@ -172,7 +175,13 @@ if __name__ == '__main__':
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
-    shadow_db["bitcoin"], shadow_db["ethereum"], shadow_db["ripple"], shadow_db["litecoin"] = "", "", "", ""
+    shadow_db["bitcoin"] = ""
+    shadow_db["ethereum"] = ""
+    shadow_db["ripple"] = ""
+    shadow_db["litecoin"] = ""
+    shadow_db["monero"] = ""
+    shadow_db["gold"] = ""
+    shadow_db["brent_oil"] = ""
 
     parser_updater = multiprocessing.Process(target=update_parser, args=(lock, delays["parser"]))
     bot_process = multiprocessing.Process(target=bot_processor, args=(lock, delays["bot"]))

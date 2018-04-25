@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def rate_usd(name):
+def rate_usd(name, output_format="text"):
     # requests look "suspicious" for server without this header
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:45.0) Gecko/20100101 Firefox/52.0'
@@ -23,7 +23,17 @@ def rate_usd(name):
         r = requests.get(currency_links[name], headers=headers)
         soup = BeautifulSoup(r.text, "lxml")
         value = soup.find("span", {"id": "last_last"}).text
-        result = name.capitalize() + ": " + value + "$"
     except:
-        result = name.capitalize() + " rate is unavailable"
-    return result
+        value = -1
+    if output_format == "text":
+        if value != -1:
+            value = "{}: {} $".format(name.capitalize(), value)
+        else:
+            value = "{} rate is unavailable".format(name.capitalize())
+    else:
+        if value != -1:
+            while "." in value:
+                value = value.replace(".", "")
+            value = value.replace(",", ".")
+            value = float(value)
+    return value

@@ -4,13 +4,7 @@ this module stores functions that collect some data from websites
 from bs4 import BeautifulSoup
 import requests
 
-
-def rate_usd(name, output_format="text"):
-    # requests look "suspicious" for server without this header
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:45.0) Gecko/20100101 Firefox/52.0'
-    }
-    currency_links = {
+currency_links = {
         "bitcoin": "https://ru.investing.com/currencies/btc-usd",
         "ethereum": "https://ru.investing.com/crypto/ethereum",
         "ripple": "https://ru.investing.com/crypto/ripple",
@@ -18,6 +12,13 @@ def rate_usd(name, output_format="text"):
         "monero": "https://ru.investing.com/crypto/monero",
         "gold": "https://ru.investing.com/commodities/gold",
         "brent_oil": "https://ru.investing.com/commodities/brent-oil"
+}
+
+
+def rate_usd(name, output_format="text"):
+    # requests look "suspicious" for server without this header
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:45.0) Gecko/20100101 Firefox/52.0'
     }
     try:
         r = requests.get(currency_links[name], headers=headers)

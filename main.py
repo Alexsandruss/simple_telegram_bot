@@ -21,13 +21,8 @@ def update_parser(lock, delay):
     global shadow_db
     while True:
         lock.acquire()
-        shadow_db["bitcoin"] = parser.rate_usd("bitcoin")
-        shadow_db["ethereum"] = parser.rate_usd("ethereum")
-        shadow_db["ripple"] = parser.rate_usd("ripple")
-        shadow_db["litecoin"] = parser.rate_usd("litecoin")
-        shadow_db["monero"] = parser.rate_usd("monero")
-        shadow_db["gold"] = parser.rate_usd("gold")
-        shadow_db["brent_oil"] = parser.rate_usd("brent_oil")
+        for c_name in parser.currency_links.keys():
+            shadow_db[c_name] = parser.rate_usd(c_name)
         lock.release()
         time.sleep(delay)
 
@@ -36,35 +31,23 @@ def message_handler(incoming_message):
     global commands
     global quotes
     global shadow_db
-    result = None
+    result = {
+        "method": "send_message",
+        "chat_id": incoming_message["chat_id"],
+        "text": "?"
+    }
     for command in commands.keys():
         if incoming_message["text"] == command:
-            result = {
-                "method": "send_message",
-                "text": commands[command],
-                "chat_id": incoming_message["chat_id"]
-            }
+            result["text"] = commands[command]
     # crypto currencies feature
     if incoming_message["text"] in ["/bitcoin", "/ethereum", "/ripple", "/litecoin", "/monero", "/gold", "/brent_oil"]:
-        result = {
-            "method": "send_message",
-            "text": shadow_db[incoming_message["text"][1:]],
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = shadow_db[incoming_message["text"][1:]]
     # random quote feature
     if incoming_message["text"] == "/quote":
-        result = {
-            "method": "send_message",
-            "text": random.choice(quotes),
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = random.choice(quotes)
     # throwing dice feature
     if incoming_message["text"].startswith("/dice"):
-        result = {
-            "method": "send_message",
-            "text": throw_dice(incoming_message["text"]),
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = throw_dice(incoming_message["text"])
     # random choice feature
     if incoming_message["text"].startswith("/random"):
         random_result = ""
@@ -73,39 +56,19 @@ def message_handler(incoming_message):
         except:
             random_result = "Type command correctly"
         finally:
-            result = {
-                "method": "send_message",
-                "text": random_result,
-                "chat_id": incoming_message["chat_id"]
-            }
+            result["text"] = random_result
     # days until newyear or summer feature
     if incoming_message["text"] == "/newyear":
-        result = {
-            "method": "send_message",
-            "text": digest.days_until_newyear(),
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = digest.days_until_newyear()
     if incoming_message["text"] == "/summer":
-        result = {
-            "method": "send_message",
-            "text": digest.days_until_summer(),
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = digest.days_until_summer()
     # locations feature
     if incoming_message["text"].startswith("/where"):
         try:
             location = incoming_message["text"].split(" ")[1]
-            result = {
-                "method": "send_location",
-                "coordinates": locations.get_coordinates(location),
-                "chat_id": incoming_message["chat_id"]
-            }
+            result["text"] = locations.get_coordinates(location)
         except:
-            result = {
-                "method": "send_message",
-                "text": "Type command correctly",
-                "chat_id": incoming_message["chat_id"]
-            }
+            result["text"] = "Type command correctly"
     if incoming_message["text"].startswith("/location"):
         try:
             location = incoming_message["text"].split(" ")[1:]
@@ -115,32 +78,16 @@ def message_handler(incoming_message):
                 "chat_id": incoming_message["chat_id"]
             }
         except:
-            result = {
-                "method": "send_message",
-                "text": "Type command correctly",
-                "chat_id": incoming_message["chat_id"]
-            }
+            result["text"] = "Type command correctly"
     # chat id getter
     if incoming_message["text"] == "/chat_id":
-        result = {
-            "method": "send_message",
-            "text": incoming_message["chat_id"],
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = incoming_message["chat_id"]
     # unix time feature
     if incoming_message["text"] == "/unix_time":
-        result = {
-            "method": "send_message",
-            "text": "{} seconds since 00:00:00 1 January 1970".format(str(round(time.time()))),
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = "{} seconds since 00:00:00 1 January 1970".format(str(round(time.time())))
     # holiday feature
     if incoming_message["text"] == "/holiday":
-        result = {
-            "method": "send_message",
-            "text": digest.check_holiday(),
-            "chat_id": incoming_message["chat_id"]
-        }
+        result["text"] = digest.check_holiday()
     return result
 
 
@@ -175,13 +122,8 @@ if __name__ == '__main__':
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
-    shadow_db["bitcoin"] = ""
-    shadow_db["ethereum"] = ""
-    shadow_db["ripple"] = ""
-    shadow_db["litecoin"] = ""
-    shadow_db["monero"] = ""
-    shadow_db["gold"] = ""
-    shadow_db["brent_oil"] = ""
+    for name in parser.currency_links.keys():
+        shadow_db[name] = ""
 
     parser_updater = multiprocessing.Process(target=update_parser, args=(lock, delays["parser"]))
     bot_process = multiprocessing.Process(target=bot_processor, args=(lock, delays["bot"]))

@@ -40,8 +40,13 @@ def message_handler(incoming_message):
         if incoming_message["text"] == command:
             result["text"] = commands[command]
     # crypto currencies feature
-    if incoming_message["text"] in ["/bitcoin", "/ethereum", "/ripple", "/litecoin", "/monero", "/gold", "/brent_oil"]:
+    if incoming_message["text"] in ["/"+key for key in parser.currency_links.keys()]:
         result["text"] = shadow_db[incoming_message["text"][1:]]
+    if incoming_message["text"] == "/currencies":
+        currencies_list = ""
+        for key in parser.currency_links.keys():
+            currencies_list += key + "\n"
+        result["text"] = currencies_list
     # random quote feature
     if incoming_message["text"] == "/quote":
         result["text"] = random.choice(quotes)
@@ -88,6 +93,8 @@ def message_handler(incoming_message):
     # holiday feature
     if incoming_message["text"] == "/holiday":
         result["text"] = digest.check_holiday()
+    if result["text"] == "?":
+        result = None
     return result
 
 
@@ -112,6 +119,10 @@ def bot_processor(lock, delay):
                     bot.send_message(outgoing_message["chat_id"], outgoing_message["text"])
                 elif outgoing_message["method"] == "send_location":
                     bot.send_location(outgoing_message["chat_id"], outgoing_message["coordinates"])
+                elif outgoing_message["method"] == "send_photo":
+                    bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"])
+                elif outgoing_message["method"] == "send_audio":
+                    bot.send_audio(outgoing_message["chat_id"], outgoing_message["audio"])
         db["last_checked_update_id"] = bot.last_checked_update_id
         jsondb.save_db("db.json", db)
         lock.release()

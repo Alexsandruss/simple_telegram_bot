@@ -3,8 +3,7 @@ Just simple telegram bot
 Features:
 1. bot responses on "/" and "?" commands that are specified in the file "commands.json" (answers also there);
 2. shows random quote on "/quote" command (quotes are stored in "quotes.json");
-3a. shows bitcoin/ethereum/ripple/litecoin/monero rates (update every 10 minutes) on "/bitcoin", "/ethereum", "/ripple", "/litecoin" or "/monero" commands;
-3b. shows gold/brent rate on "/gold" or "/brent_oil" command;
+3. shows available currencies commands on "/currencies" command;
 4. throws N-edged dice M times on "/dice N-edged M times" command;
 5. randomly chooses variant on "/random 1st_variant 2nd_variant 3rd_variant etc";
 6. shows days until New Year and summer on "/newyear" and "/summer" commands;

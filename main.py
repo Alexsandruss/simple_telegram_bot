@@ -45,7 +45,7 @@ def message_handler(incoming_message):
     if incoming_message["text"] == "/currencies":
         currencies_list = ""
         for key in parser.currency_links.keys():
-            currencies_list += key + "\n"
+            currencies_list += "/" + key + "\n"
         result["text"] = currencies_list
     # random quote feature
     if incoming_message["text"] == "/quote":

@@ -17,8 +17,8 @@ quotes = jsondb.load_db("quotes.json")["quotes"]
 
 
 # this function update parser's data
-def update_parser(lock, delay):
-    global shadow_db
+def update_parser(delay):
+    global shadow_db, lock
     while True:
         lock.acquire()
         for c_name in parser.currency_links.keys():
@@ -28,9 +28,7 @@ def update_parser(lock, delay):
 
 
 def message_handler(incoming_message):
-    global commands
-    global quotes
-    global shadow_db
+    global commands, quotes, shadow_db
     result = {
         "method": "send_message",
         "chat_id": incoming_message["chat_id"],
@@ -98,7 +96,8 @@ def message_handler(incoming_message):
     return result
 
 
-def bot_processor(lock, delay):
+def bot_processor(delay):
+    global lock
     db = jsondb.load_db("db.json")
     bot = Bot(token=db["token"])
     bot.last_checked_update_id = db["last_checked_update_id"]
@@ -136,8 +135,8 @@ if __name__ == '__main__':
     for name in parser.currency_links.keys():
         shadow_db[name] = ""
 
-    parser_updater = multiprocessing.Process(target=update_parser, args=(lock, delays["parser"]))
-    bot_process = multiprocessing.Process(target=bot_processor, args=(lock, delays["bot"]))
+    parser_updater = multiprocessing.Process(target=update_parser, args=(delays["parser"]))
+    bot_process = multiprocessing.Process(target=bot_processor, args=(delays["bot"]))
 
     parser_updater.start()
     bot_process.start()

@@ -1,7 +1,7 @@
-import jsondb
+from jsondb import JsonDB
 
 
-locations_list = jsondb.load_db("locations.json")["locations"]
+locations_list = JsonDB("locations.json").dictionary["locations"]
 
 
 def get_coordinates(location_name):

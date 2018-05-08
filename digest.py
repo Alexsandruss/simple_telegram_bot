@@ -1,5 +1,5 @@
 import time
-import jsondb
+from jsondb import JsonDB
 
 
 def days_until_summer():
@@ -31,7 +31,7 @@ def days_until_newyear():
 
 
 def check_holiday():
-    holidays = jsondb.load_db("holidays.json")
+    holidays = JsonDB("holidays.json").dictionary
     current_local_time = time.localtime()
     result = "Today there is no holiday("
     for date in holidays.keys():

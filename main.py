@@ -6,14 +6,14 @@ from dice import throw_dice
 import parser
 import digest
 import locations
-import jsondb
+from jsondb import JsonDB
 
 # delays determine how often processes run
-delays = jsondb.load_db("db.json")["delays"]
+delays = JsonDB("delays.json").dictionary["delays"]
 # default / and ? commands from commands.json
-commands = jsondb.load_db("commands.json")["commands"]
+commands = JsonDB("commands.json").dictionary["commands"]
 # quotes for bot's random quote feature
-quotes = jsondb.load_db("quotes.json")["quotes"]
+quotes = JsonDB("quotes.json").dictionary["quotes"]
 
 
 # this function update parser's data
@@ -98,14 +98,13 @@ def message_handler(incoming_message):
 
 def bot_processor(delay):
     global lock
-    db = jsondb.load_db("db.json")
-    bot = Bot(token=db["token"])
-    bot.last_checked_update_id = db["last_checked_update_id"]
+    db = JsonDB("db.json")
+    bot = Bot(token=db.dictionary["token"])
     while True:
         lock.acquire()
         messages = bot.get_last_messages()
         for message in messages:
-            if round(time.time()) - message["date"] <= db["max_time_diff"]:
+            if round(time.time()) - message["date"] <= db.dictionary["max_time_diff"]:
                 try:
                     incoming_message = {"text": message["text"], "chat_id": message["chat"]["id"]}
                 # some messages have not text (stickers, files etc)
@@ -122,8 +121,8 @@ def bot_processor(delay):
                     bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"])
                 elif outgoing_message["method"] == "send_audio":
                     bot.send_audio(outgoing_message["chat_id"], outgoing_message["audio"])
-        db["last_checked_update_id"] = bot.last_checked_update_id
-        jsondb.save_db("db.json", db)
+        db.dictionary["last_checked_update_id"] = bot.last_checked_update_id
+        db.write()
         lock.release()
         time.sleep(delay)
 

@@ -1,9 +1,5 @@
 {
   "token": "your bot's token",
   "last_checked_update_id": 0,
-  "delays": {
-    "parser": 600,
-    "bot": 2
-  },
   "max_time_diff": 60
 }

@@ -1,19 +1,17 @@
 """
 this module simplifies work with .json files
-'load_db' returns dictionary after reading .json file
-'save_db' gets dictionary and writes it to .json file
 """
 import json
 
 
-def load_db(filename):
-    file = open(filename, "r", encoding="utf-8")
-    database = json.loads(file.read())
-    file.close()
-    return database
+class JsonDB:
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+        file = open(file_path, "r", encoding="utf-8")
+        self.dictionary = json.loads(file.read())
+        file.close()
 
-
-def save_db(filename, database):
-    file = open(filename, "w", encoding="utf-8")
-    file.write(json.dumps(database, ensure_ascii=False))
-    file.close()
+    def write(self):
+        file = open(self.file_path, "w", encoding="utf-8")
+        file.write(json.dumps(self.dictionary, ensure_ascii=False))
+        file.close()

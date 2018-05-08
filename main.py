@@ -134,8 +134,8 @@ if __name__ == '__main__':
     for name in parser.currency_links.keys():
         shadow_db[name] = ""
 
-    parser_updater = multiprocessing.Process(target=update_parser, args=(delays["parser"]))
-    bot_process = multiprocessing.Process(target=bot_processor, args=(delays["bot"]))
+    parser_updater = multiprocessing.Process(target=update_parser, args=(delays["parser"],))
+    bot_process = multiprocessing.Process(target=bot_processor, args=(delays["bot"],))
 
     parser_updater.start()
     bot_process.start()

@@ -21,8 +21,8 @@ def update_parser(delay):
     global shadow_db, lock
     while True:
         lock.acquire()
-        for c_name in parser.currency_links.keys():
-            shadow_db[c_name] = parser.rate_usd(c_name)
+        for c_name in parser.cc_chart_currencies.keys():
+            shadow_db[c_name] = parser.cc_chart_price_usd(c_name)
         lock.release()
         time.sleep(delay)
 
@@ -38,13 +38,21 @@ def message_handler(incoming_message):
         if incoming_message["text"] == command:
             result["text"] = commands[command]
     # crypto currencies feature
-    if incoming_message["text"] in ["/"+key for key in parser.currency_links.keys()]:
+    if incoming_message["text"] in ["/"+key for key in parser.cc_chart_currencies.keys()]:
         result["text"] = shadow_db[incoming_message["text"][1:]]
     if incoming_message["text"] == "/currencies":
         currencies_list = ""
-        for key in parser.currency_links.keys():
+        for key in parser.cc_chart_currencies.keys():
             currencies_list += "/" + key + "\n"
         result["text"] = currencies_list
+    # old inv com currencies list
+    if incoming_message["text"] == "/invcom_currencies":
+        currencies_list = ""
+        for key in parser.invcom_currency_links.keys():
+            currencies_list += "/live_" + key + "\n"
+        result["text"] = currencies_list
+    if incoming_message["text"].startswith("/live_"):
+        result["text"] = parser.invcom_rate_usd(incoming_message["text"][6:])
     # random quote feature
     if incoming_message["text"] == "/quote":
         result["text"] = random.choice(quotes)
@@ -131,7 +139,7 @@ if __name__ == '__main__':
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
-    for name in parser.currency_links.keys():
+    for name in parser.cc_chart_currencies.keys():
         shadow_db[name] = ""
 
     parser_updater = multiprocessing.Process(target=update_parser, args=(delays["parser"],))

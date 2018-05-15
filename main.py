@@ -1,6 +1,8 @@
 import multiprocessing
 import time
 import random
+from PIL import Image
+import os
 from telegram_bot import Bot
 from dice import throw_dice
 import parser
@@ -99,8 +101,23 @@ def message_handler(incoming_message):
     # holiday feature
     if incoming_message["text"] == "/holiday":
         result["text"] = digest.check_holiday()
-    if result["text"] == "?":
-        result = None
+    if incoming_message["text"].startswith("/rgb"):
+        try:
+            rgb = [int(color) for color in incoming_message["text"].split(" ")[1:]]
+            rgb = tuple(rgb)
+        except:
+            rgb = (255, 255, 255)
+        finally:
+            image = Image.new("RGB", [64, 64], rgb)
+            image.save("rgb.jpeg", "JPEG")
+        result = {
+            "method": "send_photo",
+            "photo": open("rgb.jpeg", "rb"),
+            "chat_id": incoming_message["chat_id"]
+            }
+    if "text" in result.keys():
+        if result["text"] == "?":
+            result = None
     return result
 
 
@@ -127,8 +144,6 @@ def bot_processor(delay):
                     bot.send_location(outgoing_message["chat_id"], outgoing_message["coordinates"])
                 elif outgoing_message["method"] == "send_photo":
                     bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"])
-                elif outgoing_message["method"] == "send_audio":
-                    bot.send_audio(outgoing_message["chat_id"], outgoing_message["audio"])
         db.dictionary["last_checked_update_id"] = bot.last_checked_update_id
         db.write()
         lock.release()

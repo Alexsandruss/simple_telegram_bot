@@ -14,6 +14,7 @@
     "?summer": "/summer - shows days until summer",
     "?chat_id": "/chat_id - shows telegram chat id",
     "?unix_time": "/unix_time - shows seconds since 00:00:00 1 January 1970",
-    "?holiday": "/holiday - shows what holiday is today"
+    "?holiday": "/holiday - shows what holiday is today",
+    "?rgb": "/rgb <Red> <Green> <Blue>- shows color specified in RGB format"
   }
 }

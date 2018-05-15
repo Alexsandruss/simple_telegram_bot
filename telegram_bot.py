@@ -17,10 +17,10 @@ class Bot:
             log.write("BOT LOG")
             log.close()
 
-    def telegram_request(self, method, parameters=None):
+    def telegram_request(self, method, parameters=None, files=None):
         try:
             response = requests.post("https://api.telegram.org/bot" + self.token + "/" + method,
-                                     params=parameters).json()
+                                     params=parameters, files=files).json()
         except:
             response = {"ok": False}
         self.log_update(str(response))
@@ -70,20 +70,11 @@ class Bot:
     def send_photo(self, chat_id, photo, caption=None):
         params = {
             'chat_id': chat_id,
-            'photo': photo,
             'caption': caption,
             "disable_notification": self.disable_notification
         }
-        return self.telegram_request("sendphoto", params)
-
-    def send_audio(self, chat_id, audio, caption=None):
-        params = {
-            'chat_id': chat_id,
-            'audio': audio,
-            'caption': caption,
-            "disable_notification": self.disable_notification
-        }
-        return self.telegram_request("sendphoto", params)
+        files = {"photo": photo}
+        return self.telegram_request("sendphoto", params, files)
 
     def get_last_messages(self):
         updates = self.get_updates(self.last_checked_update_id + 1, allowed_updates=["message"])

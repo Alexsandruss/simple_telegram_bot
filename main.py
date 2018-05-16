@@ -2,7 +2,6 @@ import multiprocessing
 import time
 import random
 from PIL import Image
-import os
 from telegram_bot import Bot
 from dice import throw_dice
 import parser
@@ -105,6 +104,8 @@ def message_handler(incoming_message):
         try:
             rgb = [int(color) for color in incoming_message["text"].split(" ")[1:]]
             rgb = tuple(rgb)
+            if len(rgb) != 3:
+                raise ValueError
         except:
             rgb = (255, 255, 255)
         finally:

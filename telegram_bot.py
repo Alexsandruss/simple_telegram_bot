@@ -76,6 +76,15 @@ class Bot:
         files = {"photo": photo}
         return self.telegram_request("sendphoto", params, files)
 
+    def send_audio(self, chat_id, audio, caption=None):
+        params = {
+            'chat_id': chat_id,
+            'caption': caption,
+            "disable_notification": self.disable_notification
+        }
+        files = {"audio": audio}
+        return self.telegram_request("sendaudio", params, files)
+
     def get_last_messages(self):
         updates = self.get_updates(self.last_checked_update_id + 1, allowed_updates=["message"])
         messages = []

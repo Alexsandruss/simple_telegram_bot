@@ -1,20 +1,19 @@
 {
   "commands": {
     "/command_example": "response_to_command_example",
-    "/start": "Hello, i'm bot\nAvailable help commands:\n/currencies\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time\n?holiday",
-    "?help_example": "response_to_help_example",
-    "?help": "Available help commands:\n/currencies\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time\n?holiday",
-    "/help": "Available help commands:\n/currencies\n?dice\n?newyear, ?summer\n?random\n?where, ?location\n?chat_id\n?unix_time\n?holiday",
-    "?dice": "/dice N-edged M times - bot throws N-edged dice M times",
-    "?random": "'random 1st_variant 2nd_variant etc' - bot randomly chooses variant",
-    "?where": "/where - bot gives location with coordinates (?locations - shows locations list)",
-    "?locations": "Paris, Berlin, London, Washington, Tokyo, Beijing",
-    "?location": "/location <latitude> <longitude> - shows place with these coordinates on map",
-    "?newyear": "/newyear - shows days until New Year",
-    "?summer": "/summer - shows days until summer",
-    "?chat_id": "/chat_id - shows telegram chat id",
-    "?unix_time": "/unix_time - shows seconds since 00:00:00 1 January 1970",
-    "?holiday": "/holiday - shows what holiday is today",
-    "?rgb": "/rgb <Red> <Green> <Blue>- shows color specified in RGB format"
+    "/github": "My code: https://github.com/Alexsandruss/simple_telegram_bot",
+    "/start": "Hello, i'm bot\nAvailable help commands:\n/github\n/currencies\n/help_dice\n/help_newyear, /help_summer\n/help_random\n/help_where, /help_location\n/help_chat_id\n/help_unix_time\n/help_holiday\n/help_rgb",
+    "/help": "Available help commands:\n/currencies\n/help_dice\n/help_newyear, /help_summer\n/help_random\n/help_where, /help_location\n/help_chat_id\n/help_unix_time\n/help_holiday\n/help_rgb",
+    "/help_dice": "/dice N-edged M times - bot throws N-edged dice M times",
+    "/help_random": "'random 1st_variant 2nd_variant etc' - bot randomly chooses variant",
+    "/help_where": "/where - bot gives location with coordinates (/locations - shows locations list)",
+    "/locations": "Paris, Berlin, London, Washington, Tokyo, Beijing",
+    "/help_location": "/location <latitude> <longitude> - shows place with these coordinates on map",
+    "/help_newyear": "/newyear - shows days until New Year",
+    "/help_summer": "/summer - shows days until summer",
+    "/help_chat_id": "/chat_id - shows telegram chat id",
+    "/help_unix_time": "/unix_time - shows seconds since 00:00:00 1 January 1970",
+    "/help_holiday": "/holiday - shows what holiday is today",
+    "/help_rgb": "/rgb <Red> <Green> <Blue>- shows color specified in RGB format"
   }
 }

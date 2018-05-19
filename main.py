@@ -35,9 +35,9 @@ def message_handler(incoming_message):
         "chat_id": incoming_message["chat_id"],
         "text": "?"
     }
-    for command in commands.keys():
-        if incoming_message["text"] == command:
-            result["text"] = commands[command]
+    for command_name in commands.keys():
+        if incoming_message["text"] == command_name:
+            result["text"] = commands[command_name]
     # crypto currencies feature
     if incoming_message["text"] in ["/"+key for key in parser.cc_chart_currencies.keys()]:
         result["text"] = shadow_db[incoming_message["text"][1:]]
@@ -100,6 +100,7 @@ def message_handler(incoming_message):
     # holiday feature
     if incoming_message["text"] == "/holiday":
         result["text"] = digest.check_holiday()
+    # rgb feature
     if incoming_message["text"].startswith("/rgb"):
         try:
             rgb = [int(color) for color in incoming_message["text"].split(" ")[1:]]
@@ -145,6 +146,8 @@ def bot_processor(delay):
                     bot.send_location(outgoing_message["chat_id"], outgoing_message["coordinates"])
                 elif outgoing_message["method"] == "send_photo":
                     bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"])
+                elif outgoing_message["method"] == "send_audio":
+                    bot.send_audio(outgoing_message["chat_id"], outgoing_message["audio"])
         db.dictionary["last_checked_update_id"] = bot.last_checked_update_id
         db.write()
         lock.release()

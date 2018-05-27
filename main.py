@@ -78,10 +78,14 @@ def message_handler(incoming_message):
     if incoming_message["text"].startswith("/where"):
         try:
             location = incoming_message["text"].split(" ")[1]
-            result["text"] = locations.get_coordinates(location)
+            result = {
+                "method": "send_location",
+                "coordinates": locations.get_coordinates(location),
+                "chat_id": incoming_message["chat_id"]
+            }
         except:
             result["text"] = "Type command correctly"
-    if incoming_message["text"].startswith("/location"):
+    if incoming_message["text"].startswith("/location") and incoming_message["text"] != "/locations":
         try:
             location = incoming_message["text"].split(" ")[1:]
             result = {
@@ -115,8 +119,9 @@ def message_handler(incoming_message):
         result = {
             "method": "send_photo",
             "photo": open("rgb.jpeg", "rb"),
+            "caption": "Red - {}, Green - {}, Blue - {}".format(rgb[0], rgb[1], rgb[2]),
             "chat_id": incoming_message["chat_id"]
-            }
+        }
     if "text" in result.keys():
         if result["text"] == "?":
             result = None
@@ -145,7 +150,7 @@ def bot_processor(delay):
                 elif outgoing_message["method"] == "send_location":
                     bot.send_location(outgoing_message["chat_id"], outgoing_message["coordinates"])
                 elif outgoing_message["method"] == "send_photo":
-                    bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"])
+                    bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"], outgoing_message["caption"])
                 elif outgoing_message["method"] == "send_audio":
                     bot.send_audio(outgoing_message["chat_id"], outgoing_message["audio"])
         db.dictionary["last_checked_update_id"] = bot.last_checked_update_id

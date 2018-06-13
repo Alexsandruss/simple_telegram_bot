@@ -30,7 +30,7 @@ class Bot:
             return {}
 
     def log_update(self, note):
-        if self.keep_log and note not in ["{}", "[]", ""]:
+        if self.keep_log and "'result': []" not in note:
             log = open(self.log_file, "a")
             log.write("\n" + str(time.time()) + ":" + note)
             log.close()
@@ -84,6 +84,15 @@ class Bot:
         }
         files = {"audio": audio}
         return self.telegram_request("sendaudio", params, files)
+
+    def send_document(self, chat_id, document, caption=None):
+        params = {
+            'chat_id': chat_id,
+            'caption': caption,
+            "disable_notification": self.disable_notification
+        }
+        files = {"document": document}
+        return self.telegram_request("senddocument", params, files)
 
     def get_last_messages(self):
         updates = self.get_updates(self.last_checked_update_id + 1, allowed_updates=["message"])

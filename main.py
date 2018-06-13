@@ -122,6 +122,13 @@ def message_handler(incoming_message):
             "caption": "Red - {}, Green - {}, Blue - {}".format(rgb[0], rgb[1], rgb[2]),
             "chat_id": incoming_message["chat_id"]
         }
+    # drop log file feature
+    if incoming_message["text"] == "/droplog":
+        result = {
+            "method": "send_document",
+            "caption": "Log",
+            "chat_id": incoming_message["chat_id"]
+        }
     if "text" in result.keys():
         if result["text"] == "?":
             result = None
@@ -153,6 +160,14 @@ def bot_processor(delay):
                     bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"], outgoing_message["caption"])
                 elif outgoing_message["method"] == "send_audio":
                     bot.send_audio(outgoing_message["chat_id"], outgoing_message["audio"])
+                elif outgoing_message["method"] == "send_document":
+                    if outgoing_message["caption"].startswith("Log"):
+                        if outgoing_message["chat_id"] == bot.admin_id:
+                            bot.send_document(bot.admin_id, open(bot.log_file, "rb"), outgoing_message["caption"])
+                        else:
+                            bot.send_message(bot.admin_id, "Unresolved attempt to access to log file")
+                    else:
+                        pass
         db.dictionary["last_checked_update_id"] = bot.last_checked_update_id
         db.write()
         lock.release()

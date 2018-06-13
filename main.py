@@ -62,7 +62,6 @@ def message_handler(incoming_message):
         result["text"] = throw_dice(incoming_message["text"])
     # random choice feature
     if incoming_message["text"].startswith("/random"):
-        random_result = ""
         try:
             random_result = random.choice(incoming_message["text"].split(" ")[1:])
         except:
@@ -84,7 +83,11 @@ def message_handler(incoming_message):
                 "chat_id": incoming_message["chat_id"]
             }
         except:
-            result["text"] = "Type command correctly"
+            result = {
+                "method": "send_message",
+                "chat_id": incoming_message["chat_id"],
+                "text": "Type command correctly"
+            }
     if incoming_message["text"].startswith("/location") and incoming_message["text"] != "/locations":
         try:
             location = incoming_message["text"].split(" ")[1:]
@@ -94,7 +97,11 @@ def message_handler(incoming_message):
                 "chat_id": incoming_message["chat_id"]
             }
         except:
-            result["text"] = "Type command correctly"
+            result = {
+                "method": "send_message",
+                "chat_id": incoming_message["chat_id"],
+                "text": "Type command correctly"
+            }
     # chat id getter
     if incoming_message["text"] == "/chat_id":
         result["text"] = incoming_message["chat_id"]
@@ -138,7 +145,7 @@ def message_handler(incoming_message):
 def bot_processor(delay):
     global lock
     db = JsonDB("db.json")
-    bot = Bot(token=db.dictionary["token"])
+    bot = Bot(db.dictionary["token"])
     while True:
         lock.acquire()
         messages = bot.get_last_messages()

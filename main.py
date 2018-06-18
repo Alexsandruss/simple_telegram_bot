@@ -1,7 +1,7 @@
 import multiprocessing
 import time
 import random
-from PIL import Image
+import images
 from telegram_bot import Bot
 from dice import throw_dice
 import parser
@@ -121,14 +121,12 @@ def message_handler(incoming_message):
         except:
             rgb = (255, 255, 255)
         finally:
-            image = Image.new("RGB", [64, 64], rgb)
-            image.save("rgb.jpeg", "JPEG")
-        result = {
-            "method": "send_photo",
-            "photo": open("rgb.jpeg", "rb"),
-            "caption": "Red - {}, Green - {}, Blue - {}".format(rgb[0], rgb[1], rgb[2]),
-            "chat_id": incoming_message["chat_id"]
-        }
+            result = {
+                "method": "send_photo",
+                "photo": open(images.show_color_rgb(rgb), "rb"),
+                "caption": "Red - {}, Green - {}, Blue - {}".format(rgb[0], rgb[1], rgb[2]),
+                "chat_id": incoming_message["chat_id"]
+            }
     # drop log file feature
     if incoming_message["text"] == "/droplog":
         result = {
@@ -172,7 +170,8 @@ def bot_processor(delay):
                         if outgoing_message["chat_id"] == bot.admin_id:
                             bot.send_document(bot.admin_id, open(bot.log_file, "rb"), outgoing_message["caption"])
                         else:
-                            bot.send_message(bot.admin_id, "Unresolved attempt to access to log file")
+                            bot.send_message(bot.admin_id, "Unresolved attempt to access to log file from {}".format(
+                                outgoing_message["chat_id"]))
                     else:
                         pass
         db.dictionary["last_checked_update_id"] = bot.last_checked_update_id

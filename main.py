@@ -162,13 +162,19 @@ def bot_processor(delay):
                 elif outgoing_message["method"] == "send_location":
                     bot.send_location(outgoing_message["chat_id"], outgoing_message["coordinates"])
                 elif outgoing_message["method"] == "send_photo":
-                    bot.send_photo(outgoing_message["chat_id"], outgoing_message["photo"], outgoing_message["caption"])
+                    bot.send_file(outgoing_message["chat_id"],
+                                  outgoing_message["photo"],
+                                  "photo",
+                                  outgoing_message["caption"])
                 elif outgoing_message["method"] == "send_audio":
-                    bot.send_audio(outgoing_message["chat_id"], outgoing_message["audio"])
+                    bot.send_file(outgoing_message["chat_id"], outgoing_message["audio"], "audio")
                 elif outgoing_message["method"] == "send_document":
                     if outgoing_message["caption"].startswith("Log"):
                         if outgoing_message["chat_id"] == bot.admin_id:
-                            bot.send_document(bot.admin_id, open(bot.log_file, "rb"), outgoing_message["caption"])
+                            bot.send_file(bot.admin_id,
+                                          open(bot.log_file, "rb"),
+                                          "document",
+                                          outgoing_message["caption"])
                         else:
                             bot.send_message(bot.admin_id, "Unresolved attempt to access to log file from {}".format(
                                 outgoing_message["chat_id"]))

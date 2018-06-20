@@ -1,5 +1,6 @@
 import requests
 import time
+import os
 
 
 class Bot:
@@ -12,7 +13,9 @@ class Bot:
         self.disable_notification = disable_notification
         self.name = self.get_me()["first_name"]
         self.last_checked_update_id = 0
-        if self.keep_log:
+        if self.keep_log and self.admin_id:
+            if os.path.exists(self.log_file):
+                self.send_file(self.admin_id, open(self.log_file, "rb"), "document")
             log = open(self.log_file, "w")
             log.write("BOT LOG")
             log.close()
@@ -67,32 +70,22 @@ class Bot:
         }
         return self.telegram_request("sendlocation", params)
 
-    def send_photo(self, chat_id, photo, caption=None):
+    def send_file(self, chat_id, file, file_type="document", caption=None):
         params = {
             'chat_id': chat_id,
             'caption': caption,
             "disable_notification": self.disable_notification
         }
-        files = {"photo": photo}
-        return self.telegram_request("sendphoto", params, files)
-
-    def send_audio(self, chat_id, audio, caption=None):
-        params = {
-            'chat_id': chat_id,
-            'caption': caption,
-            "disable_notification": self.disable_notification
-        }
-        files = {"audio": audio}
-        return self.telegram_request("sendaudio", params, files)
-
-    def send_document(self, chat_id, document, caption=None):
-        params = {
-            'chat_id': chat_id,
-            'caption': caption,
-            "disable_notification": self.disable_notification
-        }
-        files = {"document": document}
-        return self.telegram_request("senddocument", params, files)
+        if file_type == "photo":
+            files = {"photo": file}
+            method = "sendphoto"
+        elif file_type == "audio":
+            files = {"audio": file}
+            method = "sendaudio"
+        else:
+            files = {"document": file}
+            method = "senddocument"
+        return self.telegram_request(method, params, files)
 
     def get_last_messages(self):
         updates = self.get_updates(self.last_checked_update_id + 1, allowed_updates=["message"])

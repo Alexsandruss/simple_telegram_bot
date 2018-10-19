@@ -8,6 +8,7 @@ import parser
 import digest
 import locations
 from jsondb import JsonDB
+from lootbox import usual_lootbox
 
 # delays determine how often processes run
 delays = JsonDB("delays.json").dictionary["delays"]
@@ -57,6 +58,8 @@ def message_handler(incoming_message):
     # random quote feature
     if incoming_message["text"] == "/quote":
         result["text"] = random.choice(quotes)
+    if incoming_message["text"] == "/lootbox":
+        result["text"] = usual_lootbox()
     # throwing dice feature
     if incoming_message["text"].startswith("/dice"):
         result["text"] = throw_dice(incoming_message["text"])

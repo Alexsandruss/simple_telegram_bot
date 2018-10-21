@@ -1,7 +1,7 @@
 import random
 
 
-def throw_dice(command="/dice", output_format="text"):
+def throw_dice(command="/dice", output_type=str):
     # command looks like '/dice N-edged M times'
     numbers = command.split(" ")
     # n - number of edges (default)
@@ -16,16 +16,7 @@ def throw_dice(command="/dice", output_format="text"):
             n = 6
         if m < 1 or m > 100:
             m = 1
-    if output_format == "text":
-        result = ""
-        for i in range(m):
-            result += str(random.randint(1, n))
-            if i == m - 1:
-                continue
-            result += ", "
-        return result
+    if output_type is str:
+        return str([random.randint(1, n) for _ in range(m)])[1:-1]
     else:
-        result = []
-        for i in range(m):
-            result.append(random.randint(1, n))
-        return result
+        return [random.randint(1, n) for _ in range(m)]

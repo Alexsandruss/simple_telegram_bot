@@ -47,14 +47,6 @@ def message_handler(incoming_message):
         for key in parser.cc_chart_currencies.keys():
             currencies_list += "/" + key + "\n"
         result["text"] = currencies_list
-    # old inv com currencies list
-    if incoming_message["text"] == "/invcom_currencies":
-        currencies_list = ""
-        for key in parser.invcom_currency_links.keys():
-            currencies_list += "/live_" + key + "\n"
-        result["text"] = currencies_list
-    if incoming_message["text"].startswith("/live_"):
-        result["text"] = parser.invcom_rate_usd(incoming_message["text"][6:])
     # random quote feature
     if incoming_message["text"] == "/quote":
         result["text"] = random.choice(quotes)

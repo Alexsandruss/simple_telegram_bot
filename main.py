@@ -8,14 +8,7 @@ import parser
 import digest
 import locations
 from jsondb import JsonDB
-from lootbox import usual_lootbox
-
-# delays determine how often processes run
-delays = JsonDB("delays.json").dictionary["delays"]
-# default / and ? commands from commands.json
-commands = JsonDB("commands.json").dictionary["commands"]
-# quotes for bot's random quote feature
-quotes = JsonDB("quotes.json").dictionary["quotes"]
+from lootbox import usual_lootbox, weapon_lootbox
 
 
 # this function update parser's data
@@ -30,7 +23,13 @@ def update_parser(delay):
 
 
 def message_handler(incoming_message):
-    global commands, quotes, shadow_db
+    global shadow_db
+
+    # default / and ? commands from commands.json
+    commands = JsonDB("commands.json").dictionary["commands"]
+    # quotes for bot's random quote feature
+    quotes = JsonDB("quotes.json").dictionary["quotes"]
+
     result = {
         "method": "send_message",
         "chat_id": incoming_message["chat_id"],
@@ -50,8 +49,11 @@ def message_handler(incoming_message):
     # random quote feature
     if incoming_message["text"] == "/quote":
         result["text"] = random.choice(quotes)
+    # lootboxes feature
     if incoming_message["text"] == "/lootbox":
         result["text"] = usual_lootbox()
+    if incoming_message["text"] == "/weapon_lootbox":
+        result["text"] = weapon_lootbox()
     # throwing dice feature
     if incoming_message["text"].startswith("/dice"):
         result["text"] = throw_dice(incoming_message["text"])
@@ -182,6 +184,9 @@ def bot_processor(delay):
 
 
 if __name__ == '__main__':
+    # delays determine how often processes run
+    delays = JsonDB("delays.json").dictionary["delays"]
+
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()

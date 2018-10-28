@@ -27,5 +27,26 @@
     "AK-104 Asimov",
     "NULL",
     "Stick of truth"
-  ]
+  ],
+  "weapon": {
+    "style": {
+      "Garbage camouflage": 10,
+      "City camouflage": 100,
+      "Forest camouflage": 100,
+      "Jungle camouflage": 50,
+      "Asimov": 10,
+      "Orange": 10,
+      "Pineapple": 10,
+      "DragonLore": 1
+    },
+    "name": [
+      "AK47",
+      "M16A1",
+      "M4A4",
+      "AWP",
+      "P90",
+      "MP5",
+      "Combat Stick"
+    ]
+  }
 }

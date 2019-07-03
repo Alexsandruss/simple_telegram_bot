@@ -2,8 +2,8 @@
   "commands": {
     "/command_example": "response_to_command_example",
     "/github": "My code: https://github.com/Alexsandruss/simple_telegram_bot",
-    "/start": "Hello, i'm bot\nAvailable help commands:\n/github\n/currencies\n/help_dice\n/help_newyear, /help_summer\n/help_random\n/help_where, /help_location\n/help_chat_id\n/help_unix_time\n/help_holiday\n/help_rgb",
-    "/help": "Available help commands:\n/currencies\n/help_dice\n/help_newyear, /help_summer\n/help_random\n/help_where, /help_location\n/help_chat_id\n/help_unix_time\n/help_holiday\n/help_rgb",
+    "/start": "Hello, i'm bot\nAvailable help commands:\n/github\n/help_dice\n/help_newyear, /help_summer\n/help_random\n/help_where, /help_location\n/help_chat_id\n/help_unix_time\n/help_holiday\n/help_rgb",
+    "/help": "Available help commands:\n/help_dice\n/help_newyear, /help_summer\n/help_random\n/help_where, /help_location\n/help_chat_id\n/help_unix_time\n/help_holiday\n/help_rgb",
     "/help_dice": "/dice N-edged M times - bot throws N-edged dice M times",
     "/help_random": "'random 1st_variant 2nd_variant etc' - bot randomly chooses variant",
     "/help_where": "/where - bot gives location with coordinates (/locations - shows locations list)",

@@ -1,6 +1,5 @@
 {
   "delays": {
-    "parser": 600,
     "bot": 2
   }
 }

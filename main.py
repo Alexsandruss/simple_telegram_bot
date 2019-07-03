@@ -4,31 +4,19 @@ import random
 import images
 from telegram_bot import Bot
 from dice import throw_dice
-import parser
 import digest
 import locations
 from jsondb import JsonDB
 from lootbox import usual_lootbox, weapon_lootbox
 
 
-# this function update parser's data
-def update_parser(delay):
-    global shadow_db, lock
-    while True:
-        lock.acquire()
-        for c_name in parser.cc_chart_currencies.keys():
-            shadow_db[c_name] = parser.cc_chart_price_usd(c_name)
-        lock.release()
-        time.sleep(delay)
-
-
 def message_handler(incoming_message):
     global shadow_db
 
     # default / and ? commands from commands.json
-    commands = JsonDB("commands.json").dictionary["commands"]
+    commands = JsonDB("commands.json")["commands"]
     # quotes for bot's random quote feature
-    quotes = JsonDB("quotes.json").dictionary["quotes"]
+    quotes = JsonDB("quotes.json")["quotes"]
 
     result = {
         "method": "send_message",
@@ -38,14 +26,6 @@ def message_handler(incoming_message):
     for command_name in commands.keys():
         if incoming_message["text"] == command_name:
             result["text"] = commands[command_name]
-    # crypto currencies feature
-    if incoming_message["text"] in ["/"+key for key in parser.cc_chart_currencies.keys()]:
-        result["text"] = shadow_db[incoming_message["text"][1:]]
-    if incoming_message["text"] == "/currencies":
-        currencies_list = ""
-        for key in parser.cc_chart_currencies.keys():
-            currencies_list += "/" + key + "\n"
-        result["text"] = currencies_list
     # random quote feature
     if incoming_message["text"] == "/quote":
         result["text"] = random.choice(quotes)
@@ -140,12 +120,12 @@ def message_handler(incoming_message):
 def bot_processor(delay):
     global lock
     db = JsonDB("db.json")
-    bot = Bot(db.dictionary["token"])
+    bot = Bot(db["token"])
     while True:
         lock.acquire()
         messages = bot.get_last_messages()
         for message in messages:
-            if round(time.time()) - message["date"] <= db.dictionary["max_time_diff"]:
+            if round(time.time()) - message["date"] <= db["max_time_diff"]:
                 try:
                     incoming_message = {"text": message["text"], "chat_id": message["chat"]["id"]}
                 # some messages have not text (stickers, files etc)
@@ -177,7 +157,7 @@ def bot_processor(delay):
                                 outgoing_message["chat_id"]))
                     else:
                         pass
-        db.dictionary["last_checked_update_id"] = bot.last_checked_update_id
+        db["last_checked_update_id"] = bot.last_checked_update_id
         db.write()
         lock.release()
         time.sleep(delay)
@@ -190,14 +170,7 @@ if __name__ == '__main__':
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
-    for name in parser.cc_chart_currencies.keys():
-        shadow_db[name] = ""
 
-    parser_updater = multiprocessing.Process(target=update_parser, args=(delays["parser"],))
     bot_process = multiprocessing.Process(target=bot_processor, args=(delays["bot"],))
-
-    parser_updater.start()
     bot_process.start()
-
-    parser_updater.join()
     bot_process.join()

@@ -1,7 +1,7 @@
 import random
 from jsondb import JsonDB
 
-lootbox_db = JsonDB("lootbox.json").dictionary
+lootbox_db = JsonDB("lootbox.json")
 
 
 def usual_lootbox():
@@ -18,4 +18,3 @@ def weapon_lootbox():
             break
         lower_bound += lootbox_db["weapon"]["style"][key]
     return random.choice(lootbox_db["weapon"]["name"]) + " | " + res
-

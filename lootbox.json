@@ -6,11 +6,13 @@
     "SCP-173",
     "PS4",
     "Ticket to Omsk",
+    "Kappa",
     "KappaPride",
     "Juice",
     "Cat",
     "1 nanoBitcoin",
     "10 rubles",
+    "20 dollars",
     "STALKER 2",
     "Hideo Kojima",
     "Rainbow",
@@ -18,35 +20,33 @@
     "Tesla Phone",
     "Baseball Bat",
     "Batman",
-    "Tulpa",
     "Hat",
     "Asteroid",
     "Black hole",
     "Alpha Centaur",
     "SCP-106",
-    "AK-104 Asimov",
     "NULL",
     "Stick of truth"
   ],
   "weapon": {
     "style": {
-      "Garbage camouflage": 10,
-      "City camouflage": 100,
-      "Forest camouflage": 100,
-      "Jungle camouflage": 50,
-      "Asimov": 10,
-      "Orange": 10,
-      "Pineapple": 10,
+      "Garbage camouflage": 5,
+      "City camouflage": 20,
+      "Forest camouflage": 20,
+      "Jungle camouflage": 10,
+      "Asimov": 5,
+      "Orange": 5,
+      "Pineapple": 5,
       "DragonLore": 1
     },
-    "name": [
-      "AK47",
-      "M16A1",
-      "M4A4",
-      "AWP",
-      "P90",
-      "MP5",
-      "Combat Stick"
-    ]
+    "name": {
+      "AK47": 5,
+      "M16A1": 2,
+      "M4A4": 3,
+      "AWP": 2,
+      "P90": 2,
+      "MP5": 2,
+      "Combat Stick": 1
+    }
   }
 }

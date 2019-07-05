@@ -9,12 +9,13 @@ def usual_lootbox():
 
 
 def weapon_lootbox():
-    weights_sum = sum([lootbox_db["weapon"]["style"][key] for key in lootbox_db["weapon"]["style"].keys()])
-    res = random.random()*weights_sum
-    lower_bound = 0
-    for key in lootbox_db["weapon"]["style"].keys():
-        if lower_bound <= res < lower_bound + lootbox_db["weapon"]["style"][key]:
-            res = key
-            break
-        lower_bound += lootbox_db["weapon"]["style"][key]
-    return random.choice(lootbox_db["weapon"]["name"]) + " | " + res
+    def get_random(d):
+        weights_sum = sum([d[key] for key in d.keys()])
+        res = random.random()*weights_sum
+        lower_bound = 0
+        for key in d.keys():
+            if lower_bound <= res < lower_bound + d[key]:
+                return key
+            lower_bound += d[key]
+
+    return get_random(lootbox_db["weapon"]["name"]) + " | " + get_random(lootbox_db["weapon"]["style"])

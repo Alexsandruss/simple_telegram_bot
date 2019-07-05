@@ -33,9 +33,7 @@ def days_until_newyear():
 def check_holiday():
     holidays = JsonDB("holidays.json").dictionary
     current_local_time = time.localtime()
-    result = "Today there is no holiday("
-    for date in holidays.keys():
-        if date.split(".") == [str(current_local_time[1]), str(current_local_time[2])]:
-            result = holidays[date]
-            break
-    return result
+    try:
+        return holidays["{}.{}".format(current_local_time[1], current_local_time[2])]
+    except KeyError:
+        return "Today there is no holiday("

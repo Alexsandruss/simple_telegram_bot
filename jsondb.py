@@ -16,6 +16,9 @@ class JsonDB:
     def __setitem__(self, key, value):
         self.dictionary[key] = value
 
+    def __delitem__(self, key):
+        del self.dictionary[key]
+
     def write(self):
         with open(self.file_path, "w", encoding="utf-8") as file:
             file.write(json.dumps(self.dictionary, ensure_ascii=False))

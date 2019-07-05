@@ -120,7 +120,7 @@ def message_handler(incoming_message):
 def bot_processor(delay):
     global lock
     db = JsonDB("db.json")
-    bot = Bot(db["token"])
+    bot = Bot(db["token"], admin_id=db["admin_id"])
     while True:
         lock.acquire()
         messages = bot.get_last_messages()

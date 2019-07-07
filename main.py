@@ -1,13 +1,9 @@
 import multiprocessing
 import time
 import random
-import images
+from modules import images, digest, locations, dice, lootbox
 from telegram_bot import Bot
-from dice import throw_dice
-import digest
-import locations
 from jsondb import JsonDB
-from lootbox import usual_lootbox, weapon_lootbox
 
 
 def message_handler(incoming_message):
@@ -16,7 +12,7 @@ def message_handler(incoming_message):
     # default / and ? commands from commands.json
     commands = JsonDB("commands.json")["commands"]
     # quotes for bot's random quote feature
-    quotes = JsonDB("quotes.json")["quotes"]
+    quotes = JsonDB("data/quotes.json")["quotes"]
 
     result = {
         "method": "send_message",
@@ -31,12 +27,12 @@ def message_handler(incoming_message):
         result["text"] = random.choice(quotes)
     # lootboxes feature
     if incoming_message["text"] == "/lootbox":
-        result["text"] = usual_lootbox()
+        result["text"] = lootbox.usual_lootbox()
     if incoming_message["text"] == "/weapon_lootbox":
-        result["text"] = weapon_lootbox()
+        result["text"] = lootbox.weapon_lootbox()
     # throwing dice feature
     if incoming_message["text"].startswith("/dice"):
-        result["text"] = throw_dice(incoming_message["text"])
+        result["text"] = dice.throw_dice(incoming_message["text"])
     # random choice feature
     if incoming_message["text"].startswith("/random"):
         try:
@@ -118,8 +114,7 @@ def message_handler(incoming_message):
 
 
 def bot_processor(delay):
-    global lock
-    db = JsonDB("db.json")
+    global lock, db
     bot = Bot(db["token"], admin_id=db["admin_id"])
     while True:
         lock.acquire()
@@ -164,13 +159,12 @@ def bot_processor(delay):
 
 
 if __name__ == '__main__':
-    # delays determine how often processes run
-    delays = JsonDB("delays.json").dictionary["delays"]
+    db = JsonDB("db.json")
 
     lock = multiprocessing.Lock()
     manager = multiprocessing.Manager()
     shadow_db = manager.dict()
 
-    bot_process = multiprocessing.Process(target=bot_processor, args=(delays["bot"],))
+    bot_process = multiprocessing.Process(target=bot_processor, args=(db["delays"]["bot"],))
     bot_process.start()
     bot_process.join()

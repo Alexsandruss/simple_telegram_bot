@@ -31,7 +31,7 @@ def days_until_newyear():
 
 
 def check_holiday():
-    holidays = JsonDB("holidays.json").dictionary
+    holidays = JsonDB("data/holidays.json").dictionary
     current_local_time = time.localtime()
     try:
         return holidays["{}.{}".format(current_local_time[1], current_local_time[2])]

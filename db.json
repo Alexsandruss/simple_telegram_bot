@@ -2,5 +2,8 @@
   "token": "your bot's token",
   "admin_id": null,
   "last_checked_update_id": 0,
-  "max_time_diff": 60
+  "max_time_diff": 60,
+  "delays": {
+    "bot": 1
+  }
 }

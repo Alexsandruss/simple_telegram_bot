@@ -1,7 +1,7 @@
 import random
 from jsondb import JsonDB
 
-lootbox_db = JsonDB("lootbox.json")
+lootbox_db = JsonDB("data/lootbox.json")
 
 
 def usual_lootbox():

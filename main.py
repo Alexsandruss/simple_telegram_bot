@@ -1,7 +1,10 @@
 import multiprocessing
 import time
 import random
-from modules import images, digest, locations, dice, lootbox
+from modules import (
+    throw_dice, check_holiday, days_until_summer, days_until_newyear,
+    show_color_rgb, get_coordinates, usual_lootbox, weapon_lootbox
+)
 from telegram_bot import Bot
 from jsondb import JsonDB
 
@@ -27,12 +30,12 @@ def message_handler(incoming_message):
         result["text"] = random.choice(quotes)
     # lootboxes feature
     if incoming_message["text"] == "/lootbox":
-        result["text"] = lootbox.usual_lootbox()
+        result["text"] = usual_lootbox()
     if incoming_message["text"] == "/weapon_lootbox":
-        result["text"] = lootbox.weapon_lootbox()
+        result["text"] = weapon_lootbox()
     # throwing dice feature
     if incoming_message["text"].startswith("/dice"):
-        result["text"] = dice.throw_dice(incoming_message["text"])
+        result["text"] = throw_dice(incoming_message["text"])
     # random choice feature
     if incoming_message["text"].startswith("/random"):
         try:
@@ -43,16 +46,16 @@ def message_handler(incoming_message):
             result["text"] = random_result
     # days until newyear or summer feature
     if incoming_message["text"] == "/newyear":
-        result["text"] = digest.days_until_newyear()
+        result["text"] = days_until_newyear()
     if incoming_message["text"] == "/summer":
-        result["text"] = digest.days_until_summer()
+        result["text"] = days_until_summer()
     # locations feature
     if incoming_message["text"].startswith("/where"):
         try:
             location = incoming_message["text"].split(" ")[1]
             result = {
                 "method": "send_location",
-                "coordinates": locations.get_coordinates(location),
+                "coordinates": get_coordinates(location),
                 "chat_id": incoming_message["chat_id"]
             }
         except:
@@ -83,7 +86,7 @@ def message_handler(incoming_message):
         result["text"] = "{} seconds since 00:00:00 1 January 1970".format(str(round(time.time())))
     # holiday feature
     if incoming_message["text"] == "/holiday":
-        result["text"] = digest.check_holiday()
+        result["text"] = check_holiday()
     # rgb feature
     if incoming_message["text"].startswith("/rgb"):
         try:
@@ -96,7 +99,7 @@ def message_handler(incoming_message):
         finally:
             result = {
                 "method": "send_photo",
-                "photo": open(images.show_color_rgb(rgb), "rb"),
+                "photo": open(show_color_rgb(rgb), "rb"),
                 "caption": "Red - {}, Green - {}, Blue - {}".format(rgb[0], rgb[1], rgb[2]),
                 "chat_id": incoming_message["chat_id"]
             }
